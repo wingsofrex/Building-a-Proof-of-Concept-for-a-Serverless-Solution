@@ -1,0 +1,61 @@
+# Create IAM Policies and Roles 
+
+1. Lambda-DynamoDBStreams-Read Policy
+Purpose: Allows the Lambda function to read from DynamoDB Streams.
+Key API Calls:
+GetShardIterator
+DescribeStream
+ListStreams
+GetRecords
+2. Lambda-Write-DynamoDB Policy
+Purpose: Grants permissions for the Lambda function to write data to a DynamoDB table.
+Key API Calls:
+PutItem
+DescribeTable
+3. Lambda-Read-SQS Policy
+Purpose: Allows the Lambda function to read messages from an SQS queue.
+Key API Calls:
+DeleteMessage
+ReceiveMessage
+GetQueueAttributes
+ChangeMessageVisibility
+4. Lambda-SNS-Publish Policy
+Purpose: Allows the Lambda function to publish messages to an SNS topic.
+Key API Calls:
+Publish
+GetTopicAttributes
+ListTopics
+
+Creating IAM roles and attaching policies to the roles
+Because AWS follows the principle of least privilege, we recommend that you provide role-based access to only the AWS resources that are required to perform a task. In this step, you create IAM roles and attach policies to the roles.
+
+In the navigation pane of the IAM dashboard, choose Roles.
+
+Choose Create role and in the Select trusted entity page, configure the following settings:
+Trusted entity type: AWS service
+Common use cases: Lambda
+Choose Next.
+
+On the Add permissions page, select Lambda-Write-DynamoDB and Lambda-Read-SQS.
+
+Choose Next
+
+For Role name, enter Lambda-SQS-DynamoDB.
+
+Choose Create role.
+
+Follow the previous steps to create two more IAM roles:
+
+An IAM role for AWS Lambda: This role grants permissions to obtain records from the DynamoDB streams and send the records to Amazon SNS. Use the following information to create the role.
+IAM role name: Lambda-DynamoDBStreams-SNS
+Trusted entity type: AWS service
+Common use cases: Lambda
+Attach policies: Lambda-SNS-Publish and Lambda-DynamoDBStreams-Read
+An IAM role for Amazon API Gateway: This role grants permissions to send data to the SQS queue and push logs to Amazon CloudWatch for troubleshooting. Use the following information to create the role.
+IAM role name: APIGateway-SQS
+Trusted entity type: AWS service
+Common use cases: API Gateway
+Attach policies: AmazonAPIGatewayPushToCloudWatchLogs
+
+JSON Files will be uploaded separately
+
